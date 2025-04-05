@@ -1,15 +1,28 @@
 name: Cypress Component Tests
 
 on:
+  push:
+    branches: [main, master, develop]
   pull_request:
-    branches: [develop]
+    branches: [main, master, develop]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+
+    env:
+      MONGODB_URI: mongodb://localhost:27017/techquiz
+      PORT: 3001
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -20,15 +33,42 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Cypress component tests
-        run: npm run cy:component
+      - name: Install MongoDB tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mongodb-clients
 
-      - name: Upload test results
+      - name: Build the application
+        run: npm run build
+
+      - name: Seed the database
+        run: npm run seed
+
+      - name: Start the server in background
+        run: npm run start & sleep 5
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          component: true
+          browser: electron
+          install: false # We've already installed dependencies
+        env:
+          CYPRESS_baseUrl: http://localhost:3001
+          CI: true
+
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+
+      - name: Upload videos
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-results
-          path: |
-            cypress/videos/
-            cypress/screenshots/
-          retention-days: 5
+          name: cypress-videos
+          path: cypress/videos
+          if-no-files-found: ignore
