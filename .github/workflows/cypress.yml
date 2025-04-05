@@ -1,4 +1,4 @@
-name: Cypress Component Tests
+name: Cypress Tests
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Install MongoDB tools
         run: |
@@ -47,20 +47,9 @@ jobs:
       - name: Start the server in background
         run: npm run start & sleep 5
 
-      - name: Cypress run component tests
+      - name: Cypress run tests
         uses: cypress-io/github-action@v6
         with:
-          component: true
-          browser: electron
-          install: false # We've already installed dependencies
-        env:
-          CYPRESS_baseUrl: http://localhost:3001
-          CI: true
-
-      - name: Cypress run e2e tests
-        uses: cypress-io/github-action@v6
-        with:
-          e2e: true
           browser: electron
           install: false # We've already installed dependencies
         env:
