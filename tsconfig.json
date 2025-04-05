@@ -7,10 +7,9 @@
     "skipLibCheck": true,
     "strict": true,
     "jsx": "react-jsx",
-    "noEmit": true,
-    "isolatedModules": true
+    "noEmit": true
   },
-  "include": [],
+  "include": ["./*.ts"],
   "exclude": [
     "node_modules",
     "**/node_modules/*",
