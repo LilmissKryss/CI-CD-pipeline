@@ -9,8 +9,8 @@ const mongoURI =
 
 // Log the connection attempt (without showing the full URI for security)
 const redactedURI = mongoURI.replace(
-  /mongodb\+srv:\/\/([^:]+):([^@]+)@/,
-  "mongodb+srv://[username]:[password]@"
+  /mongodb(\+srv)?:\/\/([^:]+):([^@]+)@/,
+  "mongodb$1://[username]:[password]@"
 );
 console.log(`Attempting to connect to MongoDB at: ${redactedURI}`);
 
