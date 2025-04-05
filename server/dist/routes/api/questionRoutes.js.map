@@ -1,0 +1,1 @@
+{"version":3,"file":"questionRoutes.js","sourceRoot":"","sources":["../../../src/routes/api/questionRoutes.ts"],"names":[],"mappings":"AAAA,OAAO,OAAO,MAAM,SAAS,CAAC;AAC9B,MAAM,MAAM,GAAG,OAAO,CAAC,MAAM,EAAE,CAAC;AAChC,OAAO,EACL,kBAAkB,EACnB,MAAM,yCAAyC,CAAC;AAEjD,MAAM,CAAC,KAAK,CAAC,SAAS,CAAC,CAAC,GAAG,CAAC,kBAAkB,CAAC,CAAC;AAEhD,eAAe,MAAM,CAAC"}
