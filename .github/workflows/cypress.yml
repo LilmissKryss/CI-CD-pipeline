@@ -12,7 +12,7 @@ jobs:
 
     services:
       mongodb:
-        image: mongo:4.4
+        image: mongo:6.0
         ports:
           - 27017:27017
 
@@ -36,7 +36,8 @@ jobs:
       - name: Install MongoDB tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y mongodb-clients
+          # Try to install mongodb-database-tools, if it fails try mongodb-clients, if both fail continue anyway
+          sudo apt-get install -y mongodb-database-tools || sudo apt-get install -y mongodb-clients || echo "MongoDB tools not available, continuing anyway"
 
       - name: Build the application
         run: npm run build
