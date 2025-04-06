@@ -11,6 +11,7 @@
     "render-build": "npm install && npm run build",
     "test": "npx cypress run --browser electron",
     "test-component": "npx cypress run --component",
+    "test-e2e": "npx cypress run --e2e",
     "test-gui": "npx cypress open"
   },
   "keywords": [],
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.1",
-    "vitest": "^2.0.3"
+    "vitest": "^3.0.9",
+    "vite": "^6.2.2"
   }
 }
