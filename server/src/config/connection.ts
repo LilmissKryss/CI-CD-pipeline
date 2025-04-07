@@ -25,7 +25,6 @@ db.once("open", () => {
   console.log("MongoDB connection established successfully");
 });
 
-<<<<<<< HEAD
 // Connect to MongoDB with options to handle SSL issues
 try {
   // For MongoDB Atlas, we need to specify SSL options
@@ -43,9 +42,5 @@ try {
 } catch (err) {
   console.error("Failed to connect to MongoDB:", err);
 }
-=======
-// Connect to MongoDB
-mongoose.connect(mongoURI);
->>>>>>> develop
 
 export default db;

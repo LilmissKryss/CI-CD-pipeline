@@ -27,7 +27,6 @@ app.use(express.static("../client/dist"));
 
 app.use(routes);
 
-<<<<<<< HEAD
 // Add a fallback route for the SPA
 app.get("*", (_req, res) => {
   res.sendFile("index.html", { root: "../client/dist" });
@@ -42,14 +41,10 @@ app.get("/health", (_req, res) => {
 console.log(`Starting server on port ${PORT}`);
 const portNumber = parseInt(PORT.toString(), 10);
 app.listen(portNumber, "0.0.0.0", () => {
-  console.log(`Server is running on port ${portNumber}`);
+  console.log(`🌍 Server is running on port ${portNumber}`);
 });
 
 // Log when database connects
 db.once("open", () => {
-  console.log(`MongoDB connection established successfully`);
-=======
-db.once("open", () => {
-  app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
->>>>>>> develop
+  console.log(`🌍 MongoDB connection established successfully`);
 });
