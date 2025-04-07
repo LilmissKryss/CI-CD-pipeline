@@ -27,6 +27,24 @@ app.use(express.static("../client/dist"));
 
 app.use(routes);
 
+// Add a fallback route for the SPA
+app.get("*", (_req, res) => {
+  res.sendFile("index.html", { root: "../client/dist" });
+});
+
+// Add a health check endpoint for Render
+app.get("/health", (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
+// Start the server regardless of database connection
+console.log(`Starting server on port ${PORT}`);
+const portNumber = parseInt(PORT.toString(), 10);
+app.listen(portNumber, "0.0.0.0", () => {
+  console.log(`Server is running on port ${portNumber}`);
+});
+
+// Log when database connects
 db.once("open", () => {
-  app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
+  console.log(`MongoDB connection established successfully`);
 });

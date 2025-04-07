@@ -25,7 +25,22 @@ db.once("open", () => {
   console.log("MongoDB connection established successfully");
 });
 
-// Connect to MongoDB
-mongoose.connect(mongoURI);
+// Connect to MongoDB with options to handle SSL issues
+try {
+  // For MongoDB Atlas, we need to specify SSL options
+  if (mongoURI.includes("mongodb+srv")) {
+    mongoose.connect(mongoURI, {
+      ssl: true,
+      tls: true,
+      tlsAllowInvalidCertificates: true, // Only for troubleshooting
+      serverSelectionTimeoutMS: 5000, // Reduce timeout for faster feedback
+    });
+  } else {
+    // For local MongoDB
+    mongoose.connect(mongoURI);
+  }
+} catch (err) {
+  console.error("Failed to connect to MongoDB:", err);
+}
 
 export default db;

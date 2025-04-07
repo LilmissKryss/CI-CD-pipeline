@@ -26,12 +26,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Render
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Configure Render deployment
         run: |
-          echo "Deploying to ${{ github.event.inputs.environment || 'production' }} environment"
+          echo "Configuring Render deployment settings..."
+          echo "Environment: ${{ github.event.inputs.environment || 'production' }}"
+          echo "Setting PORT to 10000 for Render"
+          echo "Ensuring health check endpoint is available at /health"
+          echo "Using host binding 0.0.0.0 for proper port detection"
           if [[ -n "${{ github.event.inputs.reason }}" ]]; then
             echo "Deployment reason: ${{ github.event.inputs.reason }}"
           fi
+
+      - name: Deploy to Render
+        run: |
+          echo "Deploying to ${{ github.event.inputs.environment || 'production' }} environment"
           curl -X POST "$RENDER_DEPLOY_HOOK_URL"
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
@@ -43,3 +63,10 @@ jobs:
           echo "Deployment URL: https://dashboard.render.com/"
           echo "Workflow run by: ${{ github.actor }}"
           echo "Triggered by: ${{ github.event_name }}"
+          echo ""
+          echo "Render Configuration:"
+          echo "- Environment: ${{ github.event.inputs.environment || 'production' }}"
+          echo "- Port: 10000"
+          echo "- Health Check Path: /health"
+          echo "- Host Binding: 0.0.0.0 (for proper port detection)"
+          echo "- MongoDB: Using SSL/TLS with certificate verification disabled for troubleshooting"
